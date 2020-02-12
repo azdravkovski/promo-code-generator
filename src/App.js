@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import "./App.css";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
+  const randomPromoCode = useSelector(state => state.randomPromoCode)
+  const dispatch = useDispatch();
+
+  const fetchPromoCodes = () => {
+    return dispatch => {
+      fetch("http://localhost:3001/promocodes")
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: "FETCH_ALL_PROMOCODES",
+            promoCodes: data.promoCodes
+          })
+        })
+        .catch(error => console.error(error));
+    };
+  };
+
+  useEffect(() => {
+    dispatch(fetchPromoCodes());
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="wrapper">
+        <button className="button-promo" onClick={() => dispatch({ type: "FETCH_RANDOM_PROMOCODE"})}><span>Generate promo code</span></button>
+        <p className="field-promo"><span>{randomPromoCode}</span></p>
+      </div>
     </div>
   );
 }
