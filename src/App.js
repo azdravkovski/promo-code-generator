@@ -30,6 +30,7 @@ function App() {
         <button className="button-promo" onClick={() => dispatch({ type: "FETCH_RANDOM_PROMOCODE"})}><span>Generate promo code</span></button>
         <p className="field-promo"><span>{randomPromoCode}</span></p>
       </div>
+      <p className="credits">built by <a href="https://github.com/azdravkovski">Aleksandar Zdravkovski</a></p>
     </div>
   );
 }
